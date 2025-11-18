@@ -1,0 +1,35 @@
+!python --version
+
+import json, os
+os.listdir('.')
+
+# We'll copy the module files into this notebook's working dir for demonstration.
+import shutil, os
+src = '/mnt/data/concierge_agent_demo'
+
+for fname in ['nlp_parser.py','workflow.py','models.py','sample_data.json']:
+    shutil.copy(os.path.join(src, fname), '.')
+print('Copied demo modules:', os.listdir('.'))
+
+from nlp_parser import parse_message
+from workflow import handle_intent
+
+tests = [
+    "Add task Finish project report by tomorrow",
+    "Remind me to submit assignment at 6pm",
+    "Schedule a meeting with mentor",
+    "Plan my day",
+    "Create task buy groceries"
+]
+
+for t in tests:
+    parsed = parse_message(t)
+    print('INPUT:', t)
+    print('PARSED:', parsed)
+    out = handle_intent(1, parsed)
+    print('OUTPUT:', out)
+    print('-'*60)
+import json
+with open('sample_data.json') as f:
+    data = json.load(f)
+print(json.dumps(data, indent=2))
